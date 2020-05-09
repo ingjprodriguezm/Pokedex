@@ -147,13 +147,13 @@ struct PokemonSpecies: Codable {
     let evolution_chain: EvolutionChain
     let flavor_text_entries: [FlavorText]
     let evolves_from_species: Header?
-    let form_descriptions: [Header]
+    let form_descriptions: [FormDescription]
     let forms_switchable: Bool
     let gender_rate: Int
     let genera: [Genus]
     let generation: Header
     let growth_rate: Header
-    let habitat: Header
+    let habitat: Header?
     let has_gender_differences: Bool
     let hatch_counter: Int
     let id: Int
@@ -175,6 +175,11 @@ struct FlavorText: Codable {
     let flavor_text: String
     let language: Header
     let version: Header
+}
+
+struct FormDescription: Codable {
+    let description: String
+    let language: Header
 }
 
 struct Genus: Codable {
