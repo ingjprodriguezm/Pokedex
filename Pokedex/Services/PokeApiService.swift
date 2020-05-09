@@ -10,8 +10,8 @@ import Foundation
 import Alamofire
 
 class PokeApiService {
-    func fetchPokedex(pageManager: PageManager, completion: @escaping (Pokedex?) -> Void)
-    {
+    
+    func fetchPokedex(pageManager: PageManager, completion: @escaping (Pokedex?) -> Void) {
         let urlString = "\(pageManager.nextPage)"
         AF.request(urlString, method: .get, headers:["Content-Type": "application/json"]).responseJSON { response in
             guard let data = response.data else { return }
@@ -26,8 +26,7 @@ class PokeApiService {
         }
     }
     
-    func fetchPokemon(urlPokemon: String, completion: @escaping (Pokemon?) -> Void)
-    {
+    func fetchPokemon(urlPokemon: String, completion: @escaping (Pokemon?) -> Void) {
         let urlString = "\(urlPokemon)"
         AF.request(urlString, method: .get, headers:["Content-Type": "application/json"]).responseJSON { response in
             guard let data = response.data else { return }
@@ -42,14 +41,28 @@ class PokeApiService {
         }
     }
     
-    func fetchPokemonSearched(keyword: String, completion: @escaping (Pokemon?) -> Void)
-    {
+    func fetchPokemonSearched(keyword: String, completion: @escaping (Pokemon?) -> Void) {
         let urlString = ApiConstants.baseSearchPokemon + "\(keyword.lowercased())/"
         AF.request(urlString, method: .get, headers:["Content-Type": "application/json"]).responseJSON { response in
             guard let data = response.data else { return }
             do {
                 let decoder = JSONDecoder()
                 let pokemonRequest: Pokemon = try decoder.decode(Pokemon.self, from: data)
+                completion(pokemonRequest)
+            } catch let error {
+                print(error)
+                completion(nil)
+            }
+        }
+    }
+    
+    func fetchPokemonSpecies(urlPokemon: String, completion: @escaping (PokemonSpecies?) -> Void) {
+        let urlString = "\(urlPokemon)"
+        AF.request(urlString, method: .get, headers:["Content-Type": "application/json"]).responseJSON { response in
+            guard let data = response.data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let pokemonRequest: PokemonSpecies = try decoder.decode(PokemonSpecies.self, from: data)
                 completion(pokemonRequest)
             } catch let error {
                 print(error)

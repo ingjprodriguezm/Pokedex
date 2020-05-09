@@ -8,8 +8,8 @@
 
 import Foundation
 
-class PageManager
-{
+class PageManager {
+    
     var initialPage: String
     var nextPage: String
     var previousPage: String
@@ -19,13 +19,13 @@ class PageManager
         self.nextPage = self.initialPage
         self.previousPage = ""
     }
-    func nextPage(nextPage: String)
-    {
+    
+    func nextPage(nextPage: String) {
         previousPage = self.nextPage
         self.nextPage = nextPage
     }
-    func resetPage()
-    {
+    
+    func resetPage() {
         nextPage = initialPage
         previousPage = ""
     }

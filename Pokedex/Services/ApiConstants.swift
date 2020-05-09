@@ -8,8 +8,9 @@
 
 import Foundation
 
-class ApiConstants{
-    static let basePokemonPage = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
+class ApiConstants {
+    static let baseURLAPI = "https://pokeapi.co/api/v2/"
+    static let basePokemonPage = baseURLAPI + "pokemon?limit=10&offset=0"
     static let basePokemonImage = "https://pokeres.bastionbot.org/images/pokemon/"
-    static let baseSearchPokemon = "https://pokeapi.co/api/v2/pokemon/"
+    static let baseSearchPokemon = baseURLAPI + "pokemon/"
 }

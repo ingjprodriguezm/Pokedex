@@ -11,122 +11,91 @@ import UIKit
 
 class PokemonCell: UITableViewCell {
 
-    @IBOutlet weak var pokemonImageView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var numberLabel: UILabel!
-    @IBOutlet weak var primaryTypeImageView: UIImageView!
-    @IBOutlet weak var secondTypeImageView: UIImageView!
+    @IBOutlet private weak var pokemonImageView: UIImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var numberLabel: UILabel!
+    @IBOutlet private weak var primaryTypeImageView: UIImageView!
+    @IBOutlet private weak var secondTypeImageView: UIImageView!
     
-    var model: PokemonData!{
-        didSet{
+    var model: PokemonData! {
+        didSet {
             setUp()
         }
     }
     
-    func setUp()
-    {
+    func setUp() {
+        pokemonImageView.image = nil
+        primaryTypeImageView.image = nil
+        secondTypeImageView.image = nil
+        
         nameLabel.text = model.0.name.capitalized
         numberLabel.text = "#\(String(format: "%03d", model.0.id))"
-        if let data = model.1{
+        if let data = model.1 {
             pokemonImageView.image = UIImage(data: data)
         }
         model.0.types.forEach { (pokeType) in
-            let type = pokeType.type.name
             let slot = pokeType.slot
-            asignTypes(type: type, slot: slot)
+            if let type = PokemonType(rawValue: pokeType.type.name) {
+                asignTypes(type: type,  slot: slot)
+            }
         }
         
     }
     
-    func asignTypes(type: String, slot: Int)
-    {
+    func asignTypes(type: PokemonType, slot: Int) {
         var image: UIImage? = nil
         switch type {
-        case "normal":
+        case .normal:
             image = UIImage(named: "Types-Normal")!
-            break
-        case "fighting":
+        case .fighting:
             image = UIImage(named: "Types-Fight")!
-            break
-        case "flying":
+        case .flying:
             image = UIImage(named: "Types-Flying")!
-            break
-        case "poison":
+        case .poison:
             image = UIImage(named: "Types-Poison")!
-            break
-        case "ground":
+        case .ground:
             image = UIImage(named: "Types-Ground")!
-            break
-        case "rock":
+        case .rock:
             image = UIImage(named: "Types-Rock")!
-            break
-        case "bug":
+        case .bug:
             image = UIImage(named: "Types-Bug")!
-            break
-        case "ghost":
+        case .ghost:
             image = UIImage(named: "Types-Ghost")!
-            break
-        case "steel":
+        case .steel:
             image = UIImage(named: "Types-Steel")!
-            break
-        case "fire":
+        case .fire:
             image = UIImage(named: "Types-Fire")!
-            break
-        case "water":
+        case .water:
             image = UIImage(named: "Types-Water")!
-            break
-        case "grass":
+        case .grass:
             image = UIImage(named: "Types-Grass")!
-            break
-        case "electric":
+        case .electric:
             image = UIImage(named: "Types-Electric")!
-            break
-        case "psychic":
+        case .psychic:
             image = UIImage(named: "Types-Psychic")!
-            break
-        case "ice":
+        case .ice:
             image = UIImage(named: "Types-Ice")!
-            break
-        case "dragon":
+        case .dragon:
             image = UIImage(named: "Types-Dragon")!
-            break
-        case "dark":
+        case .dark:
             image = UIImage(named: "Types-Dark")!
-            break
-        case "fairy":
+        case .fairy:
             image = UIImage(named: "Types-Fairy")!
-            break
-        case "unknown":
+        case .unknown:
             image = UIImage(named: "Types-Normal")!
-            break
-        case "shadow":
+        case .shadow:
             image = UIImage(named: "Types-Shadow")!
-            break
-        default:
-            break
         }
         switch slot {
         case 1:
             primaryTypeImageView.image = image
-            break
+            
         case 2:
             secondTypeImageView.image = image
-            break
+            
         default:
             break
         }
         
     }
-    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-
 }

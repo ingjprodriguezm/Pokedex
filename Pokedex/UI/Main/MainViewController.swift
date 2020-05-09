@@ -14,8 +14,8 @@ import ProgressHUD
 
 class MainViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var searchBar: UISearchBar!
     let bag = DisposeBag()
     let model = MainViewModel()
     var isNormalView = true
@@ -30,9 +30,8 @@ class MainViewController: UIViewController {
 }
 
 //MARK: Bind
-extension MainViewController
-{
-    func bind(){
+extension MainViewController {
+    func bind() {
         model.pokemonsVariable.asObservable()
             .bind(to: tableView.rx
                 .items(cellIdentifier: "pokemonCell",
@@ -42,7 +41,7 @@ extension MainViewController
         .disposed(by: bag)
         
         model.showLoadingIndicator.asObservable().subscribe(onNext: { (showLoadingIndicator) in
-            if(showLoadingIndicator){
+            if showLoadingIndicator {
                 ProgressHUD.show()
             } else{
                 ProgressHUD.dismiss()
@@ -60,7 +59,7 @@ extension MainViewController
 }
 
 //MARK: TableView Delegate
-extension MainViewController: UITableViewDelegate{
+extension MainViewController: UITableViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -73,22 +72,44 @@ extension MainViewController: UITableViewDelegate{
             }
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row > -1 {
+            let index = Int(indexPath.row)
+            toDetailsView(pokemonData: model.getDataForIndex(index: index))
+        }
+    }
 }
 
 
 //MARK: Search
-extension MainViewController{
+extension MainViewController {
     
-    func onSearch(){
+    func onSearch() {
         model.reset()
-        if !searchText.isEmpty{
+        if !searchText.isEmpty {
             isNormalView = false
             self.searchText = searchBar.text!
             model.getSearchedPokemon(keyword: searchText)
-        } else{
+        } else {
             isNormalView = true
             searchText = ""
             model.getPokemonPage()
         }
+    }
+}
+
+
+//MARK: Navigation
+extension MainViewController {
+    func toDetailsView(pokemonData: PokemonData){
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Detail", bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "detailView") as! DetailViewController
+        
+        vc.currentPokemon = pokemonData
+        
+        let navEditorViewController: UINavigationController = UINavigationController(rootViewController: vc)
+        
+        self.present(navEditorViewController, animated: true, completion: nil)
     }
 }

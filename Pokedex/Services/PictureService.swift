@@ -9,10 +9,9 @@
 import Foundation
 import Alamofire
 
-class PictureService
-{
-    func fetchPicturePokemon(pokeIndex: Int, completion: @escaping (Data?) -> Void)
-    {
+class PictureService {
+    
+    func fetchPicturePokemon(pokeIndex: Int, completion: @escaping (Data?) -> Void) {
         let trackURL = URL(string: ApiConstants.basePokemonImage + "\(pokeIndex).png")!
         
         AF.request(trackURL).responseJSON { response in
